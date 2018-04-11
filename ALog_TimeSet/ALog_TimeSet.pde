@@ -5,6 +5,7 @@
  * This example works with the Wiring / Arduino program that follows below.
  */
 
+static int SerialPortNum = 1;  //USER DEFINABLE
 
 import processing.serial.*;
 import java.util.*; 
@@ -96,7 +97,7 @@ void setup()
   // On Windows machines, this generally opens COM1.
   // Open whatever port is the one you're using.
   print(Serial.list());
-  String portName = Serial.list()[1];
+  String portName = Serial.list()[SerialPortNum];
   Logger = new Serial(this, portName, 38400);
 }
 
@@ -161,7 +162,7 @@ void draw() {
     } catch(NullPointerException e) {}
   }
   
-  try{if(Val.contains("computer?")){
+  try{if(Val.contains("computer?") || Val.contains("Uh-oh")){
     for(int i = 0; i < 10; i++){  //FIX kinda spamy
     Logger.write('g');
     //print("g"); //DEBUG!
@@ -180,6 +181,11 @@ void draw() {
      }
      delay(5); 
     }
+    if(Val.contains("Uh-oh")) { //Stuck in strange 2000 problem, why is this even needed?
+      delay(3000);  //Really fraked up attempt to use existing call response, may this print statment laiden monstrosity find its appropriate level of hell... //DEBUG!
+      Logger.write(LoggerSetTime());
+      print("Y2K!"); //DEBUG!
+    }
     
 
     //while(Logger.available() < 9) {  //FIX fixed number issue, or validate with minumum unix time
@@ -193,6 +199,7 @@ void draw() {
     //println(LoggerTimeDateInitial.length());
     //LoggerTimeDateInitial.trim();
     LoggerTimeDateInitial = LoggerTimeDateInitial.substring(0, 10);
+    LoggerTimeDateInitial = LoggerTimeDateInitial.trim(); //Remove leading whitespace
     //LoggerTimeDateInitial = LoggerTimeDateInitial.replaceAll("[^\\x00-\\x7F]", ""); //FIX, try to find better way to parse
    // LoggerTimeDateInitial.trim();
     //println(LoggerTimeDateInitial.length());
@@ -214,9 +221,16 @@ void draw() {
     SetButtonColor = SetButtonColor_ACTIVE;
     SetButtonTextColor = color(0);
     PrintBox(SetButton, SetButtonColor);
-    SetButtonMessage = "Press to\n  Set\nLogger\n Time";
+    
+    if(Val.contains("Uh-oh")) {
+      SetButtonMessage = "Encountered\nY2K\nBug";
+      //PrintText(SetLabel, SetButtonTextColor, "Encountered\nY2K\nBug");
+    }
+    else {
+      SetButtonMessage = "Press to\n  Set\nLogger\n Time";
+      //PrintText(SetLabel, SetButtonTextColor, SetButtonMessage);
+    }
     PrintText(SetLabel, SetButtonTextColor, SetButtonMessage);
-  
     PrintText(CompTimeData, TextColor, CompTimeDateInitial);
     PrintText(LoggerTimeData, TextColor, EpochToHuman(LoggerTimeDateInitial)); 
     PrintText(ErrorData, TextColor, str(abs(EpochToLong(LoggerTimeDateInitial) - GetCompTimeEpoch())) + " Seconds");
@@ -233,6 +247,18 @@ void draw() {
     //Logger.write("1606213134216x");
   } 
   }catch(NullPointerException e) {}
+  
+  //try{if(Val.contains("Uh-oh")) {
+  //  //SetReady = true;
+  //  //for(int i = 0; i < 10; i++){  //FIX kinda spamy
+  //  Logger.write(LoggerSetTime());
+  //  //print("g"); //DEBUG!
+  //  //delay(10);
+  //  //}
+  //  //delay(10);
+  //  //Logger.write("1606213134216x");
+  //} 
+  //}catch(NullPointerException e) {}
   
   if(SetReady == true && SetCommand == true){
     Logger.write('y');
