@@ -66,6 +66,7 @@ long TimeError = 0;
 
 PImage webImg;
 
+String portName = "";
 void setup() 
 {
   size(600, 400);
@@ -98,7 +99,7 @@ void setup()
   // On Windows machines, this generally opens COM1.
   // Open whatever port is the one you're using.
   print(Serial.list());
-  String portName = Serial.list()[SerialPortNum];
+  portName = Serial.list()[SerialPortNum];
   Logger = new Serial(this, portName, 38400);
 }
 
@@ -165,39 +166,29 @@ void draw() {
   
   try{if(Val.contains("Timestamp")){
     long TimeStamp = millis();
+    //print("Val = "); print(Val); //DEBUG!
     LoggerTimeDateInitial = Val;
     CompTimeDateInitial = EpochToHuman(GetCompTimeEpoch());  //MOD
-       print("GOT IT!");
-       print(LoggerTimeDateInitial);
+    LoggerTimeDateInitial = LoggerTimeDateInitial.substring(12, 31);
+       //print("GOT IT!");  //DEBUG!
+       //print(LoggerTimeDateInitial); //DEBUG!
      }
-     delay(5); 
-    if(Val.contains("Uh-oh")) { //Stuck in strange 2000 problem, why is this even needed?
-      delay(4000);  //Really fraked up attempt to use existing call response, may this print statment laiden monstrosity find its appropriate level of hell... //DEBUG!
-      Logger.write(LoggerSetTime());
-      print("Y2K!"); //DEBUG!
-    }
-    
 
-    //while(Logger.available() < 9) {  //FIX fixed number issue, or validate with minumum unix time
-    //  //print("wait"); //DEBUG!
-    //  delay(1);
-    //}
-    //println("FRAK");  //DEBUG!
 
     
         //print("BANG!"); //DEBUG!
     //println(LoggerTimeDateInitial.length());
     //LoggerTimeDateInitial.trim();
-    LoggerTimeDateInitial = LoggerTimeDateInitial.substring(11, 23);
-    LoggerTimeDateInitial = LoggerTimeDateInitial.trim(); //Remove leading whitespace
+
+    //LoggerTimeDateInitial = LoggerTimeDateInitial.trim(); //Remove leading whitespace
     //LoggerTimeDateInitial = LoggerTimeDateInitial.replaceAll("[^\\x00-\\x7F]", ""); //FIX, try to find better way to parse
    // LoggerTimeDateInitial.trim();
     //println(LoggerTimeDateInitial.length());
-    print("Logger Time = ");
-    println(LoggerTimeDateInitial);
-    print("Comp Time = ");
-    print(GetCompTimeEpoch());
-    println(CompTimeDateInitial);
+    //print("Logger Time = ");
+    //println(LoggerTimeDateInitial);
+    //print("Comp Time = ");
+    //print(GetCompTimeEpoch());
+    //println(CompTimeDateInitial);
     
     PrintBox(CompTimeBox, CompTimeColor);
     PrintText(CompTimeLabel, TextColor, "Computer Time:"); 
@@ -230,13 +221,13 @@ void draw() {
   }
   
   //DEBUG!
-  try{if(Val.contains("(y/n)")) {
-    SetReady = true;
-    //Logger.write('y');
-    //delay(10);
-    //Logger.write("1606213134216x");
-  } 
-  }catch(NullPointerException e) {}
+  //try{if(Val.contains("(y/n)")) {
+  //  SetReady = true;
+  //  //Logger.write('y');
+  //  //delay(10);
+  //  //Logger.write("1606213134216x");
+  //} 
+  //}catch(NullPointerException e) {}
   
   //try{if(Val.contains("Uh-oh")) {
   //  //SetReady = true;
@@ -250,12 +241,28 @@ void draw() {
   //} 
   //}catch(NullPointerException e) {}
   
-  if(SetReady == true && SetCommand == true){
-    Logger.write('y');
-    delay(10);
+  if(SetCommand == true){
+    print("RESET!"); //DEBUG!
+    //Logger.write('y');
+    Logger.setDTR(false);
+    delay(1000);
+    Logger.setDTR(true);
+    //Logger = new Serial(this, portName, 38400);
+    boolean Test = false;
+    String Check = "";
+    while(Test == false){
+      Check = Logger.readStringUntil('\n');
+      try{
+        if(Check.contains("Init")) Test = true;
+      }
+      catch (NullPointerException e) {
+        
+      }
+      if(Check != null) print(Check);
+    }
     Logger.write(LoggerSetTime());
+    print("Sent!"); //DEBUG!
     SetCommand = false; 
-    delay(100);
   }
 
   Val = Logger.readStringUntil('\n');
@@ -290,11 +297,12 @@ long HumanToEpoch(String HumanTime) {
     //java.text.SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd     HH:mm:ss");
     //java.util.Date date = df.parse(HumanTime);
     //long epoch = date.getTime();
-    
+    long epoch = 0;
     try {
-      SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd     HH:mm:ss");     
+      SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");     
       Date date = df.parse(HumanTime);      
-      long epoch = date;
+      epoch = date.getTime();
+      //print(epoch); //DEBUG!
     } catch(Exception e) {
       e.printStackTrace();
       System.out.print("you get the ParseException");
@@ -309,7 +317,7 @@ long HumanToEpoch(String HumanTime) {
 }
 
 String EpochToHuman(String EpochTime) {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd     HH:mm:ss");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
     //String TimeDate = null;
     long Epoch = Long.parseLong(EpochTime);
@@ -332,13 +340,13 @@ long EpochToLong(String EpochTime) {
 }
 
 String LoggerSetTime() {
-  SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd1HHmmss");
+  SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
   sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
   //long Epoch = Long.parseLong(EpochTime);
   Date TimeDate = new Date();
   String DateTimeSet = sdf.format(TimeDate.getTime()) + "x";
   //String DateTimeSet = nf(year() % 100, 2) + nf(month(), 2) + nf(day(), 2) + "1" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2) + "x"; //FIX day of week placeholder 
-  print(DateTimeSet); //DEBUG!
+  //print(DateTimeSet); //DEBUG!
   return DateTimeSet;
 }
 
