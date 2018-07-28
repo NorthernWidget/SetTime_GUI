@@ -5,7 +5,7 @@
  * This example works with the Wiring / Arduino program that follows below.
  */
 
-static int SerialPortNum = 1;  //USER DEFINABLE
+static int SerialPortNum = 32;  //USER DEFINABLE
 
 import processing.serial.*;
 import java.util.*; 
@@ -99,6 +99,30 @@ void setup()
   // On Windows machines, this generally opens COM1.
   // Open whatever port is the one you're using.
   print(Serial.list());
+  
+  boolean _exitflag = false;
+  int i = 0;
+  String portName;
+  while(i < Serial.list().length && !_exitflag){
+    portName = Serial.list()[i];
+    if(portName.substring(3) == "COM"){
+      break;
+    }
+    else if (portName.length() > 11){
+      if (portName.substring(11) == "/dev/ttyUSB"){
+        break;
+      }
+    }
+    else if (portName.length() > 17){
+      if (portName.substring(17) == "/dev/cu.usbserial"){
+        break;
+      }
+      else if (portName.substring(18) == "/dev/tty.usbserial"){
+        break;
+      }
+    }
+    i++;
+  }
   portName = Serial.list()[SerialPortNum];
   Logger = new Serial(this, portName, 38400);
 }
