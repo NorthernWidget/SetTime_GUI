@@ -129,12 +129,6 @@ void setup()
 
 void draw() {
 
-  
-
-  
-//  while(true) { 
-  
-
   fill(255);
   ellipse(450, 250, 200, 200);
   image(webImg, 350, 150);
@@ -172,47 +166,12 @@ void draw() {
     stroke(0);
   }
   
-  
-  
-  
-  
-  // if(Ping == false){
-  //   Logger.write('A');
-  //   //print("BANG!");
-  //   if(Init == true){
-  //   try{if(Val.contains("ALog")) Ping = true;
-  //   } catch(NullPointerException e) {}
-  //   }
-    
-    // try{if(Val.contains("Logger initializing.")) Init = true;
-    // } catch(NullPointerException e) {}
-   //}
-  
   try{if(Val.contains("Timestamp")){
-    long TimeStamp = millis();
-    //print("Val = "); print(Val); //DEBUG!
     LoggerTimeDateInitial = Val;
     CompTimeDateInitial = EpochToHuman(GetCompTimeEpoch());  //MOD
     LoggerTimeDateInitial = LoggerTimeDateInitial.substring(12, 31);
-       //print("GOT IT!");  //DEBUG!
-       //print(LoggerTimeDateInitial); //DEBUG!
-     }
-
-
-    
-        //print("BANG!"); //DEBUG!
-    //println(LoggerTimeDateInitial.length());
-    //LoggerTimeDateInitial.trim();
-
-    //LoggerTimeDateInitial = LoggerTimeDateInitial.trim(); //Remove leading whitespace
-    //LoggerTimeDateInitial = LoggerTimeDateInitial.replaceAll("[^\\x00-\\x7F]", ""); //FIX, try to find better way to parse
-   // LoggerTimeDateInitial.trim();
-    //println(LoggerTimeDateInitial.length());
-    //print("Logger Time = ");
-    //println(LoggerTimeDateInitial);
-    //print("Comp Time = ");
-    //print(GetCompTimeEpoch());
-    //println(CompTimeDateInitial);
+    TimeError = int(abs(HumanToEpoch(LoggerTimeDateInitial) - GetCompTimeEpoch()));
+  }
     
     PrintBox(CompTimeBox, CompTimeColor);
     PrintText(CompTimeLabel, TextColor, "Computer Time:"); 
@@ -227,51 +186,24 @@ void draw() {
     SetButtonTextColor = color(0);
     PrintBox(SetButton, SetButtonColor);
     
-    if(Val.contains("Uh-oh")) {
-      SetButtonMessage = "Encountered\nY2K\nBug";
-      //PrintText(SetLabel, SetButtonTextColor, "Encountered\nY2K\nBug");
-    }
-    else {
-      SetButtonMessage = "Press to\n  Set\nLogger\n Time";
-      //PrintText(SetLabel, SetButtonTextColor, SetButtonMessage);
-    }
+    SetButtonMessage = "Press to\n  Set\nLogger\n Time";
+    //PrintText(SetLabel, SetButtonTextColor, SetButtonMessage);
+    
     PrintText(SetLabel, SetButtonTextColor, SetButtonMessage);
     PrintText(CompTimeData, TextColor, CompTimeDateInitial);
     PrintText(LoggerTimeData, TextColor, LoggerTimeDateInitial); 
-    PrintText(ErrorData, TextColor, str(abs(HumanToEpoch(LoggerTimeDateInitial) - GetCompTimeEpoch())) + " Seconds");
+    //PrintText(ErrorData, TextColor, str(abs(HumanToEpoch(LoggerTimeDateInitial) - GetCompTimeEpoch())) + " Seconds");
+    PrintText(ErrorData, TextColor, str(TimeError) + " Seconds");
   }
   catch(NullPointerException e) {
   //print("NULL POINTER ERROR!");
   }
   
-  //DEBUG!
-  //try{if(Val.contains("(y/n)")) {
-  //  SetReady = true;
-  //  //Logger.write('y');
-  //  //delay(10);
-  //  //Logger.write("1606213134216x");
-  //} 
-  //}catch(NullPointerException e) {}
-  
-  //try{if(Val.contains("Uh-oh")) {
-  //  //SetReady = true;
-  //  //for(int i = 0; i < 10; i++){  //FIX kinda spamy
-  //  Logger.write(LoggerSetTime());
-  //  //print("g"); //DEBUG!
-  //  //delay(10);
-  //  //}
-  //  //delay(10);
-  //  //Logger.write("1606213134216x");
-  //} 
-  //}catch(NullPointerException e) {}
-  
   if(SetCommand == true){
     print("RESET!"); //DEBUG!
-    //Logger.write('y');
-    Logger.setDTR(false);
-    delay(1000);
+    Logger.setDTR(false);  //Reset logger
+    delay(10);
     Logger.setDTR(true);
-    //Logger = new Serial(this, portName, 38400);
     boolean Test = false;
     String Check = "";
     while(Test == false){
@@ -324,6 +256,7 @@ long HumanToEpoch(String HumanTime) {
     long epoch = 0;
     try {
       SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");     
+      df.setTimeZone(TimeZone.getTimeZone("UTC"));
       Date date = df.parse(HumanTime);      
       epoch = date.getTime();
       //print(epoch); //DEBUG!
@@ -337,7 +270,7 @@ long HumanToEpoch(String HumanTime) {
     //catch (ParseException e) {
     //  e.printStackTrace(); 
     //}
-    return epoch;
+    return epoch/1000;
 }
 
 String EpochToHuman(String EpochTime) {
