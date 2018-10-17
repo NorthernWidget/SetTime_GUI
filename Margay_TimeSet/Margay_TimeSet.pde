@@ -105,24 +105,26 @@ void setup()
   String portName;
   while(i < Serial.list().length && !_exitflag){
     portName = Serial.list()[i];
-    if(portName.substring(3) == "COM"){
-      break;
+    if(portName.substring(0, 3).equals("COM")){
+      if(Integer.parseInt(portName.substring(3)) != 1) break; //Exit only if not "COM1"
     }
     else if (portName.length() > 11){
-      if (portName.substring(11) == "/dev/ttyUSB"){
+      if (portName.substring(11).equals("/dev/ttyUSB")){
         break;
       }
     }
     else if (portName.length() > 17){
-      if (portName.substring(17) == "/dev/cu.usbserial"){
+      if (portName.substring(17).equals("/dev/cu.usbserial")){
         break;
       }
-      else if (portName.substring(18) == "/dev/tty.usbserial"){
+      else if (portName.substring(18).equals("/dev/tty.usbserial")){
         break;
       }
     }
     i++;
+    print(i); //DEBUG!
   }
+  SerialPortNum = i;
   portName = Serial.list()[SerialPortNum];
   Logger = new Serial(this, portName, 38400);
 }
