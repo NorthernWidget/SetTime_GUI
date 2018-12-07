@@ -1,8 +1,11 @@
 /**
- * Simple Write. 
- * 
- * Check if the mouse is over a rectangle and writes the status to the serial port. 
- * This example works with the Wiring / Arduino program that follows below.
+  * Set Time Program for the Project Margay Data Logger
+  * Developed by Bobby Schulz at Northern Widget
+  *
+  * Compatible with modular Margay Library
+  *
+  * "That's not fair. That's not fair at all. There was time now. There was, was all the time I needed..."
+  * - Mr. Henery Bemis
  */
 
 static int SerialPortNum = 32;  //USER DEFINABLE
@@ -189,16 +192,13 @@ void draw() {
     PrintBox(SetButton, SetButtonColor);
     
     SetButtonMessage = "Press to\n  Set\nLogger\n Time";
-    //PrintText(SetLabel, SetButtonTextColor, SetButtonMessage);
     
     PrintText(SetLabel, SetButtonTextColor, SetButtonMessage);
     PrintText(CompTimeData, TextColor, CompTimeDateInitial);
     PrintText(LoggerTimeData, TextColor, LoggerTimeDateInitial); 
-    //PrintText(ErrorData, TextColor, str(abs(HumanToEpoch(LoggerTimeDateInitial) - GetCompTimeEpoch())) + " Seconds");
     PrintText(ErrorData, TextColor, str(TimeError) + " Seconds");
   }
   catch(NullPointerException e) {
-  //print("NULL POINTER ERROR!");
   }
   
   if(SetCommand == true){
@@ -252,33 +252,22 @@ long GetCompTimeEpoch() {
 }
 
 long HumanToEpoch(String HumanTime) {
-    //java.text.SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd     HH:mm:ss");
-    //java.util.Date date = df.parse(HumanTime);
-    //long epoch = date.getTime();
     long epoch = 0;
     try {
       SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");     
       df.setTimeZone(TimeZone.getTimeZone("UTC"));
       Date date = df.parse(HumanTime);      
       epoch = date.getTime();
-      //print(epoch); //DEBUG!
     } catch(Exception e) {
       e.printStackTrace();
       System.out.print("you get the ParseException");
     }
-    //try {
-    //  long epoch = new SimpleDateFormat("yyyy/MM/dd     HH:mm:ss").parse(HumanTime).getTime();
-    //}
-    //catch (ParseException e) {
-    //  e.printStackTrace(); 
-    //}
     return epoch/1000;
 }
 
 String EpochToHuman(String EpochTime) {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-    //String TimeDate = null;
     long Epoch = Long.parseLong(EpochTime);
     Date TimeDate = new Date(Epoch*1000);
     return sdf.format(TimeDate);
@@ -287,8 +276,6 @@ String EpochToHuman(String EpochTime) {
 String EpochToHuman(long Epoch) {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
     sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-    //String TimeDate = null;
-    //long Epoch = Long.parseLong(EpochTime);
     Date TimeDate = new Date(Epoch*1000);
     return sdf.format(TimeDate);
 }
@@ -301,11 +288,8 @@ long EpochToLong(String EpochTime) {
 String LoggerSetTime() {
   SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
   sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-  //long Epoch = Long.parseLong(EpochTime);
   Date TimeDate = new Date();
   String DateTimeSet = sdf.format(TimeDate.getTime()) + "x";
-  //String DateTimeSet = nf(year() % 100, 2) + nf(month(), 2) + nf(day(), 2) + "1" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2) + "x"; //FIX day of week placeholder 
-  //print(DateTimeSet); //DEBUG!
   return DateTimeSet;
 }
 
@@ -319,31 +303,3 @@ void PrintText(float[] Coord, color Color, String Text) {
   fill(Color);
   text(Text, Coord[0], Coord[1]); 
 }
-
-
-
-/*
-  // Wiring/Arduino code:
- // Read data from the serial and turn ON or OFF a light depending on the value
- 
- char val; // Data received from the serial port
- int ledPin = 4; // Set the pin to digital I/O 4
- 
- void setup() {
- pinMode(ledPin, OUTPUT); // Set pin as OUTPUT
- Serial.begin(9600); // Start serial communication at 9600 bps
- }
- 
- void loop() {
- while (Serial.available()) { // If data is available to read,
- val = Serial.read(); // read it and store it in val
- }
- if (val == 'H') { // If H was received
- digitalWrite(ledPin, HIGH); // turn the LED on
- } else {
- digitalWrite(ledPin, LOW); // Otherwise turn it OFF
- }
- delay(100); // Wait 100 milliseconds for next reading
- }
- 
- */
