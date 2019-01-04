@@ -4,6 +4,8 @@
   *
   * Compatible with modular Margay Library
   *
+  * Version = 1.0.1
+  *
   * "That's not fair. That's not fair at all. There was time now. There was, was all the time I needed..."
   * - Mr. Henery Bemis
  */
