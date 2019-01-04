@@ -109,7 +109,7 @@ void setup()
   while(i < Serial.list().length && !_exitflag){
     portName = Serial.list()[i];
     if(portName.substring(0, 3).equals("COM")){
-      if(Integer.parseInt(portName.substring(3)) != 1) break; //Exit only if not "COM1"
+      if(Integer.parseInt(portName.substring(3)) != 1 && Integer.parseInt(portName.substring(3)) != 3) break; //Exit only if not "COM1" or "COM3"
     }
     else if (portName.length() > 11){
       if (portName.substring(11).equals("/dev/ttyUSB")){
