@@ -1,6 +1,6 @@
 /**
   * Set Time Program for the Project Margay Data Logger
-  * Developed by Bobby Schulz at Northern Widget
+  * Developed by Bobby Schulz at Nohrthern Widget
   *
   * Compatible with modular Margay Library
   *
@@ -69,7 +69,7 @@ String CompTimeDateInitial = null;
 String LoggerTimeDateInitial = null;
 long TimeError = 0;
 
-PImage webImg;
+PImage NWseal;
 
 String portName = "";
 void setup() 
@@ -77,9 +77,11 @@ void setup()
   size(600, 400);
   background(0);
   
-  String url = "https://avatars0.githubusercontent.com/u/5341107?v=3&s=200";
+  // String url = "https://avatars0.githubusercontent.com/u/5341107?v=3&s=200";
   // Load image from a web server
-  webImg = loadImage(url, "png");
+  // Load image locally
+  String url = "NWseal.png";
+  NWseal = loadImage(url, "png");
   
   PrintBox(CompTimeBox, CompTimeColor);
   PrintText(CompTimeLabel, TextColor, "Computer Time:"); 
@@ -108,6 +110,7 @@ void setup()
   boolean _exitflag = false;
   int i = 0;
   String portName;
+  print(Serial.list());
   while(i < Serial.list().length && !_exitflag){
     portName = Serial.list()[i];
     if(portName.substring(0, 3).equals("COM")){
@@ -130,7 +133,8 @@ void setup()
     print(i); //DEBUG!
   }
   SerialPortNum = i;
-  portName = Serial.list()[SerialPortNum];
+  portName = "/dev/ttyUSB0"; //
+  //portName = Serial.list()[SerialPortNum];
   Logger = new Serial(this, portName, 38400);
 }
 
@@ -138,7 +142,7 @@ void draw() {
 
   fill(255);
   ellipse(450, 250, 200, 200);
-  image(webImg, 350, 150);
+  image(NWseal, 350, 150);
   if(mouseOverRect(SetButton[0], SetButton[1], SetButton[2], SetButton[3])){
     SetOver = true;
     strokeWeight(5);
