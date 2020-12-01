@@ -140,6 +140,7 @@ void setup()
   // }
   // SerialPortNum = i;
   portName = Serial.list()[SerialPortNum];
+  portName = "/dev/ttyUSB0";
   Logger = new Serial(this, portName, 38400);
 }
 
