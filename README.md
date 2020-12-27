@@ -17,9 +17,7 @@ Don't want to download Processing? No problem. You can install prepared Java exe
 
 ### Setting your clock
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/q0fVwhMNLZg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-*For the video-inclined, this shows you how to set the time on your logger after installing SetTime_GUI.*
+*For the A/V-inclined, [this video](https://youtu.be/q0fVwhMNLZg) shows you how to set the time on your logger after installing SetTime_GUI.*
 
 To use this program to set your clock, you must go through the following steps:
 
