@@ -39,14 +39,16 @@ To use this program to set your clock, you must go through the following steps:
 5. As a result of the previous step, a window will open. This window will load with values from RTC on board the logger and the computer time.
 
 **Program is in the process of getting time from the logger**
-![](WaitingForTime.png?raw=true "Title")
+
+![Waiting for time](WaitingForTime.png?raw=true "Title")
 
 6. Once this screen has loaded, you will see the current time on your computer in the top (blue) box. Make sure this time is, in fact, correct! Below in the (in the green box), you will see the current logger time, and finally in the bottom (red) box, you will see how large the error is between the two devices
 	* If the error is acceptable or 0, then you are ready to go! Press push to close in the upper right corner to end the program.
 	* If, more likely, the logger is not set, or the setting has drifted significantly, press the "Set Logger Time" button in the upper middle of the window. Give the system a few seconds to perform the setting, then an updated time will appear. If this time setting is correct, then go ahead and close the window by pressing "Push to Close" in the upper right corner.
 
 **Time has been read into the program**
-![](LoadedTime.png?raw=true "Title")
+
+![Time loaded into logger](LoadedTime.png?raw=true "Title")
 
 At this point, the time should be set and your logger should be ready to go to the field.
 
