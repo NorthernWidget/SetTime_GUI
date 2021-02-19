@@ -105,36 +105,41 @@ void setup()
   // is always my  FTDI adaptor, so I open Serial.list()[0].
   // On Windows machines, this generally opens COM1.
   // Open whatever port is the one you're using.
+  print("All available ports: ");
   print(Serial.list());
   
   boolean _exitflag = false;
   int i = 0;
   String portName;
-  print(Serial.list());
+  //print(Serial.list());
   while(i < Serial.list().length && !_exitflag){
     portName = Serial.list()[i];
     if(portName.substring(0, 3).equals("COM")){
       if(Integer.parseInt(portName.substring(3)) != 1 && Integer.parseInt(portName.substring(3)) != 3) break; //Exit only if not "COM1" or "COM3"
     }
     else if (portName.length() > 11){
-      if (portName.substring(11).equals("/dev/ttyUSB")){
+      if (portName.substring(0,11).equals("/dev/ttyUSB")){
         break;
       }
     }
     else if (portName.length() > 17){
-      if (portName.substring(17).equals("/dev/cu.usbserial")){
+      if (portName.substring(0,17).equals("/dev/cu.usbserial")){
         break;
       }
-      else if (portName.substring(18).equals("/dev/tty.usbserial")){
+      else if (portName.substring(0,18).equals("/dev/tty.usbserial")){
         break;
       }
     }
     i++;
-    print(i); //DEBUG!
+    //print(i); //DEBUG!
   }
   SerialPortNum = i;
-  portName = "/dev/ttyUSB0"; //
-  //portName = Serial.list()[SerialPortNum];
+  //portName = "/dev/ttyUSB0"; //
+  portName = Serial.list()[SerialPortNum];
+  print("\n");
+  print("Selected port: ");
+  print(portName);
+  print("\n");
   Logger = new Serial(this, portName, 38400);
 }
 
