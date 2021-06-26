@@ -32,6 +32,7 @@ To use this program to set your clock, you must go through the following steps:
 #### If using the executable
 
 3. Open the executable file. Note that you may need to download/update Java for it to run on Windows; the Linux version is bundled with local Java libraries.
+	* For Windows, when you open the executable file, if you do not have Java installed yet you will be prompted to install it and will be brought to the Java website to download it. Simply download, follow Java's installation instructions and open the executable again.
 4. [Nothing! Celebrate that you're using the executable and that it's easy.]
 
 #### For either method
