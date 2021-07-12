@@ -21,7 +21,7 @@ Don't want to download Processing? No problem. You can install prepared Java exe
 
 To use this program to set your clock, you must go through the following steps:
 
-1. Make sure a Margay or Resnik Library compatible program is loaded onto the logger. This is any code incorporating and intantiating `Margay.h` or `Resnik.h`.
+1. Make sure a Margay or Okapi Library compatible program is loaded onto the logger. This is any code incorporating and intantiating `Margay.h` or `Okapi.h`.
 2. Plug the logger into the computer via the micro-USB cable.
 
 #### If using Processing
