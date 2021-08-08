@@ -11,7 +11,7 @@ For this option, you will also have to clone/save a copy of this repository on y
 
 ### Running outside of Processing
 
-***Note: in order to run the standalone SetTime program, an installation of Java is required.***
+***Note: In order to run the standalone SetTime program, an installation of Java is required.***
 
 Don't want to download Processing? No problem. You can install prepared Java executables for:
 * [64-bit Linux](https://drive.google.com/file/d/1gW2tnu2t9jABWCnqmpSAMX8eulWXuIyv/view?usp=sharing)
@@ -37,7 +37,7 @@ To use this program to set your clock, you must go through the following steps:
 	* For Windows, when you open the executable file, if you do not have Java installed yet you will be prompted to install it and will be brought to the Java website to download it. Simply download, follow Java's installation instructions and open the executable again.
 4. [Nothing! Celebrate that you're using the executable and that it's easy.]
 
-***Note: if for whatever reason the executable is not functioning, defer to the version via Processing.***
+***Note: If for whatever reason the executable is not functioning, defer to the version via Processing.***
 
 #### For either method
 
