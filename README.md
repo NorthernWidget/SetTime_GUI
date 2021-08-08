@@ -37,6 +37,8 @@ To use this program to set your clock, you must go through the following steps:
 	* For Windows, when you open the executable file, if you do not have Java installed yet you will be prompted to install it and will be brought to the Java website to download it. Simply download, follow Java's installation instructions and open the executable again.
 4. [Nothing! Celebrate that you're using the executable and that it's easy.]
 
+***Note: if for whatever reason the executable is not functioning, defer to the version via Processing.***
+
 #### For either method
 
 5. As a result of the previous step, a window will open. This window will load with values from RTC on board the logger and the computer time.
