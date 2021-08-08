@@ -11,6 +11,8 @@ For this option, you will also have to clone/save a copy of this repository on y
 
 ### Running outside of Processing
 
+***Note: in order to run the standalone SetTime program, an installation of Java is required.***
+
 Don't want to download Processing? No problem. You can install prepared Java executables for:
 * [64-bit Linux](https://drive.google.com/file/d/1gW2tnu2t9jABWCnqmpSAMX8eulWXuIyv/view?usp=sharing)
 * [64-bit Windows](https://drive.google.com/file/d/1jLe1Z-629XJ8ikFgR_EwZZ-dWOePTuzI/view?usp=sharing)
